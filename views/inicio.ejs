@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   
+</head>
+<style>
+    body {
+    background-color: #eee
+}
+
+.product {
+    padding: 10px;
+    background-color: #fff;
+    position: relative
+}
+
+.about h4 {
+    margin-bottom: -3px
+}
+
+.about h3 {
+    color: #e3ce57
+}
+
+.about span {
+    font-size: 13px
+}
+
+.dot {
+    height: 40px;
+    width: 40px;
+    background-color: #e3ce57;
+    border-radius: 50%;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer;
+    right: 10%;
+    z-index: 10;
+    bottom: -5%
+}
+
+.inner-dot {
+    height: 30px;
+    width: 30px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    cursor: pointer
+}
+</style>
+<body>
+
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center g-1">
+        <% productos.forEach(function(producto) { %>
+        <div class="col-md-4">  
+            <div class="product text-center"> <img src="<%= producto.imagen %>" width="250">
+                <div class="about text-left px-3">
+                    <h4><%= producto.nombre %></h4> <span class="text-muted"><%= producto.descripcion %></span>
+                    <h3><%= producto.precio %></h3>
+                </div> <span class="dot"><span class="inner-dot"><i class="fa fa-plus"></i></span></span>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div> 
+
+</body>
+</html>
