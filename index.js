@@ -80,7 +80,7 @@ app.post('/productos', async(req, res) => {
         res.status(500).send({ error: err.message });
     }
 });
-            
+
 app.get('/productos1', (req, res) => {
 
     const productos = [
@@ -129,6 +129,66 @@ app.get('/productos1', (req, res) => {
     productos: productos
    })
 });
+
+pp.get('/productos/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const doc = await db.collection('productos').doc(id).get();
+    if (!doc.exists) {
+      return res.status(404).render('404', { mensaje: 'Producto no encontrado' }); // opcional
+    }
+    const data = doc.data();
+    const producto = {
+      id: doc.id,
+      nombre: data.nombre,
+      descripcion: data.descripcion,
+      precio: data.precio,
+      imagen: data.imagen
+    };
+    res.render('detalle', { producto });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al obtener el producto');
+  }
+});
+
+// Elimina el producto y redirige al listado
+app.post('/productos/:id/delete', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const docRef = db.collection('productos').doc(id);
+    const doc = await docRef.get();
+    if (!doc.exists) {
+      return res.status(404).send('Producto no encontrado');
+    }
+    await docRef.delete();
+    // redirige al listado
+    res.redirect('/productos');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al eliminar el producto');
+  }
+});
+
+
+
+
+
+// por metodo DELETE (API)
+app.delete('/api/productos/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const docRef = db.collection('productos').doc(id);
+    const doc = await docRef.get();
+    if (!doc.exists) return res.status(404).json({ error: 'Producto no encontrado' });
+    await docRef.delete();
+    res.json({ ok: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
 app.listen(port, () => {
     console.log('Servidor inicializado en http://localhost:' + port);
